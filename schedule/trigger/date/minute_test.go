@@ -3,7 +3,7 @@ package date
 import "testing"
 
 func TestMinute(t *testing.T) {
-	m, err := New("10-20,30")
+	m, err := NewMinute("10-20,30")
 	if err != nil {
 		t.Error(err)
 		return
