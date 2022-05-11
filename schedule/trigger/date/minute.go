@@ -46,6 +46,8 @@ func New(minute string) (*Minute, error) {
 	return &m, nil
 }
 
+//IsValid check if a minute in range
+//input should be in range 0-59
 func (m *Minute) IsValid(minute int) bool {
 	return (m.minute>>minute)%2 == 1
 }
