@@ -5,9 +5,11 @@ import (
 	"time"
 )
 
+type Action int
+
 //the action when Triggered.
 const (
-	Reject = iota
+	Reject Action = iota
 	PassThrough
 	Accept
 )
@@ -15,7 +17,7 @@ const (
 type Trigger struct {
 	dates  date.List
 	prior  int
-	action int
+	action Action
 }
 
 func New() *Trigger {
@@ -32,8 +34,7 @@ func (tr *Trigger) SetPrior(prior int) {
 // in Accept mode, it returns Accept / PassThrough.
 // in PassThrough mode, it returns PassThrough / Reject.
 // in Reject mode, it returns Reject / PassThrough.
-// Please pass trigger.Reject, trigger.PassThrough or trigger.Accept.
-func (tr *Trigger) SetAction(action int) {
+func (tr *Trigger) SetAction(action Action) {
 	if action < Reject || action > Accept {
 		return
 	}
@@ -41,7 +42,7 @@ func (tr *Trigger) SetAction(action int) {
 }
 
 // IsTriggered returns an action.
-func (tr *Trigger) IsTriggered(t time.Time) int {
+func (tr *Trigger) IsTriggered(t time.Time) Action {
 	ok := tr.dates.Check(t)
 	if ok {
 		return tr.action
