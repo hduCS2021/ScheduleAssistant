@@ -1,7 +1,7 @@
 package trigger
 
 import (
-	date "github.com/hduCS2021/ScheduleAssistant/schedule/date/minute"
+	"github.com/hduCS2021/ScheduleAssistant/schedule/date"
 	"testing"
 	"time"
 )
