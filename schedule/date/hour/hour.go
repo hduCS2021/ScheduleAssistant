@@ -1,9 +1,10 @@
-package hour
+package date
 
 import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Hour uint32
@@ -45,24 +46,7 @@ func NewHour(hour string) (Hour, error) {
 }
 
 //IsValid check if Hour in range
-//input should be in range 0-23
-func (m Hour) IsValid(hour int) bool {
-	return (m>>hour)%2 == 1
-}
-
-//GetNextTime return next valid Hour after now(now not included)
-//input should be in range -1 to 23
-//it returns the first valid Hour, if now is -1
-//if there is no valid Hour, -1 will be returned
-func (m Hour) GetNextTime(now int) int {
-	var tmp uint32
-	tmp = uint32(m) >> (now + 1)
-	pos := now + 1
-	for ; pos < 24; pos++ {
-		if tmp%2 == 1 {
-			return pos
-		}
-		tmp >>= 1
-	}
-	return -1
+//input should be in range [0,23]
+func (m Hour) IsValid(t time.Time) bool {
+	return (m>>t.Hour())%2 == 1
 }

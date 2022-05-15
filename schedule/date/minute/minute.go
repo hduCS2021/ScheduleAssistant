@@ -1,4 +1,4 @@
-package minute
+package date
 
 import (
 	"fmt"
@@ -47,8 +47,8 @@ func NewMinute(minute string) (Minute, error) {
 
 //IsValid check if a minute in range
 //input should be in range 0-59
-func (m Minute) IsValid(minute int) bool {
-	return (m>>minute)%2 == 1
+func (m Minute) IsValid(t time.Time) bool {
+	return (m>>t.Minute())%2 == 1
 }
 
 func (m Minute) GetTimeUnit() time.Duration {
