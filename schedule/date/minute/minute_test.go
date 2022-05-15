@@ -1,4 +1,4 @@
-package date
+package minute
 
 import "testing"
 
@@ -25,17 +25,5 @@ func TestMinute(t *testing.T) {
 	}
 	if !m.IsValid(30) {
 		t.Error("分钟", 30, "校验失败")
-	}
-	if m.GetNextMinute(12) != 13 {
-		t.Error("获取12的下个时间点错误")
-	}
-	if m.GetNextMinute(25) != 30 {
-		t.Error("获取25的下个时间点错误")
-	}
-	if m.GetNextMinute(-1) != 10 {
-		t.Error("获取首个时间点错误")
-	}
-	if m.GetNextMinute(40) != -1 {
-		t.Error("获取不存在的时间点错误")
 	}
 }

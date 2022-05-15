@@ -1,9 +1,12 @@
-package date
+package hour
 
-import "testing"
+import (
+	"github.com/hduCS2021/ScheduleAssistant/schedule/date/minute"
+	"testing"
+)
 
 func TestHour(t *testing.T) {
-	m, err := NewMinute("3-8,12")
+	m, err := minute.NewMinute("3-8,12")
 	if err != nil {
 		t.Error(err)
 		return
@@ -25,17 +28,5 @@ func TestHour(t *testing.T) {
 	}
 	if !m.IsValid(12) {
 		t.Error("小时", 30, "校验失败")
-	}
-	if m.GetNextMinute(12) != 13 {
-		t.Error("获取12的下个时间点错误")
-	}
-	if m.GetNextMinute(25) != 30 {
-		t.Error("获取25的下个时间点错误")
-	}
-	if m.GetNextMinute(-1) != 10 {
-		t.Error("获取首个时间点错误")
-	}
-	if m.GetNextMinute(40) != -1 {
-		t.Error("获取不存在的时间点错误")
 	}
 }

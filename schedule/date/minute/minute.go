@@ -1,9 +1,10 @@
-package date
+package minute
 
 import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Minute uint64
@@ -50,19 +51,6 @@ func (m Minute) IsValid(minute int) bool {
 	return (m>>minute)%2 == 1
 }
 
-//GetNextMinute return next valid Minute after now(now not included)
-//input should be in range -1 to 59
-//it returns the first valid Minute, if now is -1
-//if there is no valid Minute, -1 will be returned
-func (m Minute) GetNextMinute(now int) int {
-	var tmp uint64
-	tmp = uint64(m) >> (now + 1)
-	pos := now + 1
-	for ; pos < 60; pos++ {
-		if tmp%2 == 1 {
-			return pos
-		}
-		tmp >>= 1
-	}
-	return -1
+func (m Minute) GetTimeUnit() time.Duration {
+	return time.Minute
 }

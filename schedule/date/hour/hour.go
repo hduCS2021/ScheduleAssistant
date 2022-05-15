@@ -1,4 +1,4 @@
-package date
+package hour
 
 import (
 	"fmt"
@@ -50,11 +50,11 @@ func (m Hour) IsValid(hour int) bool {
 	return (m>>hour)%2 == 1
 }
 
-//GetNextHour return next valid Hour after now(now not included)
+//GetNextTime return next valid Hour after now(now not included)
 //input should be in range -1 to 23
 //it returns the first valid Hour, if now is -1
 //if there is no valid Hour, -1 will be returned
-func (m Hour) GetNextHour(now int) int {
+func (m Hour) GetNextTime(now int) int {
 	var tmp uint32
 	tmp = uint32(m) >> (now + 1)
 	pos := now + 1
