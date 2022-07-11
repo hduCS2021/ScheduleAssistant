@@ -10,21 +10,24 @@ type StuSet struct {
 	lock     *sync.RWMutex
 }
 
-func EmptySet() StuSet {
-	return StuSet{
+//EmptySet returns a new empty StuSet
+func EmptySet() *StuSet {
+	return &StuSet{
 		students: nil,
 		lock:     new(sync.RWMutex),
 	}
 }
 
+//All returns a StuSet that contains all students
 func All() *StuSet {
 	set := EmptySet()
 	for index := range allStudents {
 		set.students = append(set.students, &allStudents[index])
 	}
-	return &set
+	return set
 }
 
+//FilterTag returns a new StuSet including students that are tagged by certain tag and are in original StuSet
 func (set *StuSet) FilterTag(tag string) *StuSet {
 	set.lock.RLock()
 	defer set.lock.RUnlock()
@@ -34,9 +37,10 @@ func (set *StuSet) FilterTag(tag string) *StuSet {
 			set1.students = append(set1.students, v)
 		}
 	}
-	return &set1
+	return set1
 }
 
+//FilterFunc returns a new StuSet including Students that satisfied func f and are in original StuSet
 func (set *StuSet) FilterFunc(f func(Student) bool) *StuSet {
 	set.lock.Lock()
 	defer set.lock.Unlock()
@@ -46,17 +50,20 @@ func (set *StuSet) FilterFunc(f func(Student) bool) *StuSet {
 			set1.students = append(set1.students, v)
 		}
 	}
-	return &set1
+	return set1
 }
 
-func (set *StuSet) Add(stu Student) {
+//Add a Student to the Set if not exists, and return the original StuSet
+func (set *StuSet) Add(stu Student) *StuSet {
 	set.lock.Lock()
 	defer set.lock.Unlock()
 	if !set.existWithoutLock(stu) {
 		set.students = append(set.students, stu)
 	}
+	return set
 }
 
+//Remove a Student to the Set if exists, and return the original StuSet
 func (set *StuSet) Remove(stu Student) {
 	set.lock.Lock()
 	defer set.lock.Unlock()
@@ -73,6 +80,7 @@ func (set *StuSet) Remove(stu Student) {
 	}
 }
 
+//Exist check if a Student is included in a StuSet
 func (set *StuSet) Exist(stu Student) bool {
 	set.lock.RLock()
 	defer set.lock.RUnlock()
@@ -88,18 +96,21 @@ func (set *StuSet) existWithoutLock(stu Student) bool {
 	return false
 }
 
-func (set *StuSet) Send(msg message.Msg) {
-	set.ForEach(func(stu *Student) bool {
-		(*stu).Send(msg)
+//Broadcast broadcasts a message to all Students in StuSet
+func (set *StuSet) Broadcast(msg message.Msg) {
+	set.ForEach(func(stu Student) bool {
+		stu.Send(msg)
 		return false
 	})
 }
 
-func (set *StuSet) ForEach(F func(stu *Student) bool) {
+//ForEach do func to every student in StuSet,
+//break when F returns false
+func (set *StuSet) ForEach(F func(stu Student) bool) {
 	set.lock.Lock()
 	defer set.lock.Unlock()
 	for i := range set.students {
-		if !F(&set.students[i]) {
+		if !F(set.students[i]) {
 			break
 		}
 	}

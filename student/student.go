@@ -7,6 +7,7 @@ import (
 	"sync"
 )
 
+//Student is packed *student
 type Student interface {
 	GetName() string
 	GetQQ() int64
