@@ -2,6 +2,7 @@ package date
 
 import (
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"sort"
 	"strconv"
 	"strings"
@@ -10,7 +11,7 @@ import (
 
 type Year []int
 
-func NewYear(year string) (Year, error) {
+func NewYear(year string) Year {
 	var m Year
 	res := strings.FieldsFunc(year, func(r rune) bool {
 		return r == ','
@@ -19,7 +20,8 @@ func NewYear(year string) (Year, error) {
 		if strings.ContainsRune(v, '-') {
 			var bg, ed int
 			if _, err := fmt.Sscanf(v, "%d-%d", &bg, &ed); err != nil {
-				return m, err
+				log.Warnf("fail to parse time: %v", err)
+				return m
 			}
 			for i := bg; i <= ed; i++ {
 				if m.isNotExist(i) {
@@ -30,7 +32,8 @@ func NewYear(year string) (Year, error) {
 		} else {
 			t, err := strconv.Atoi(v)
 			if err != nil {
-				return m, err
+				log.Warnf("fail to parse time: %v", err)
+				return m
 			}
 			if m.isNotExist(t) {
 				m = append(m, t)
@@ -38,7 +41,7 @@ func NewYear(year string) (Year, error) {
 			}
 		}
 	}
-	return m, nil
+	return m
 }
 
 func (m *Year) isNotExist(year int) bool {

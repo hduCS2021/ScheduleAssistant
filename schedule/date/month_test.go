@@ -6,11 +6,7 @@ import (
 )
 
 func TestMonth(t *testing.T) {
-	m, err := NewMonth("3-5,9")
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	m := NewMonth("3-5,9")
 	constructTime := func(month int) time.Time {
 		return time.Date(2022, time.Month(month), 1, 0, 0, 0, 0, time.Local)
 	}

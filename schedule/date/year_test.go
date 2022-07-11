@@ -6,11 +6,7 @@ import (
 )
 
 func TestYear(t *testing.T) {
-	y, err := NewYear("2012-2016,2022")
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	y := NewYear("2012-2016,2022")
 	in := []int{2010, 2011, 2012, 2013, 2015, 2016, 2021, 2022, 2023}
 	out := []bool{false, false, true, true, true, true, false, true, false}
 	constructTime := func(year int) time.Time {

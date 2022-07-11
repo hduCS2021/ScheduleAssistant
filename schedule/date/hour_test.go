@@ -6,11 +6,7 @@ import (
 )
 
 func TestHour(t *testing.T) {
-	m, err := NewHour("3-8,12")
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	m := NewHour("3-8,12")
 	d := time.Date(2000, 1, 2, 0, 1, 5, 6, time.Local)
 
 	for i := 0; i < 3; i++ {

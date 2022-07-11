@@ -1,15 +1,18 @@
 package date
 
 import (
+	log "github.com/sirupsen/logrus"
 	"time"
 )
 
 type Month uint16
 
-func NewMonth(month string) (Month, error) {
+func NewMonth(month string) Month {
 	var m Month
-	err := parseString(&m, 1, 12, month)
-	return m, err
+	if err := parseString(&m, 1, 12, month); err != nil {
+		log.Warnf("fail to parse time:%v", err)
+	}
+	return m
 }
 
 func (d Month) IsValid(t time.Time) bool {

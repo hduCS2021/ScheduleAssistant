@@ -6,11 +6,7 @@ import (
 )
 
 func TestMinute(t *testing.T) {
-	m, err := NewMinute("10-20,30")
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	m := NewMinute("10-20,30")
 	d := time.Date(2000, 1, 2, 3, 1, 5, 6, time.Local)
 	for i := 1; i < 10; i++ {
 		if m.IsValid(d) {

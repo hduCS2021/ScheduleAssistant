@@ -1,15 +1,18 @@
 package date
 
 import (
+	log "github.com/sirupsen/logrus"
 	"time"
 )
 
 type Hour uint32
 
-func NewHour(hour string) (Hour, error) {
+func NewHour(hour string) Hour {
 	var h Hour
-	err := parseString(&h, 0, 23, hour)
-	return h, err
+	if err := parseString(&h, 0, 23, hour); err != nil {
+		log.Warnf("fail to parse time:%v", err)
+	}
+	return h
 }
 
 //IsValid check if Hour in range

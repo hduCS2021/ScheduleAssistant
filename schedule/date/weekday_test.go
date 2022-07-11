@@ -6,11 +6,7 @@ import (
 )
 
 func TestWeekday(t *testing.T) {
-	weekday, err := NewWeekday("2-4,7")
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	weekday := NewWeekday("2-4,7")
 	t0 := time.Date(2022, 5, 15, 0, 0, 0, 0, time.Local)
 	result := []bool{false, true, true, true, false, false, true}
 	for i := 1; i <= 7; i++ {

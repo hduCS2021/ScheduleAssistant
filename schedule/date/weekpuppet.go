@@ -1,6 +1,9 @@
 package date
 
-import "time"
+import (
+	log "github.com/sirupsen/logrus"
+	"time"
+)
 
 type WeekPuppet uint8
 
@@ -13,6 +16,7 @@ func NewWeekPuppet(puppet int) WeekPuppet {
 	if puppet >= 0 && puppet <= 3 {
 		return WeekPuppet(puppet)
 	}
+	log.Warnf("fail to parse time:invalid weekPuppet %d", puppet)
 	return 0
 }
 

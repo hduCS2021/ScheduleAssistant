@@ -6,11 +6,7 @@ import (
 )
 
 func TestDay(t *testing.T) {
-	m, err := NewDay("10-20,30")
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	m := NewDay("10-20,30,87")
 	d := time.Date(2000, 1, 1, 3, 1, 5, 6, time.Local)
 	for i := 1; i < 10; i++ {
 		if m.IsValid(d) {
