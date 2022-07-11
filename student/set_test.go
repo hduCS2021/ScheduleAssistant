@@ -16,8 +16,8 @@ func TestStuSet(t *testing.T) {
 		}
 	}()
 	stus := All()
-	stus.ForEach(func(stu *Student) bool {
-		t.Log((*stu).GetName())
+	stus.ForEach(func(stu Student) bool {
+		t.Log(stu.GetName())
 		return true
 	})
 	stu := GetStudentByQQ(1098105012)
@@ -28,8 +28,8 @@ func TestStuSet(t *testing.T) {
 	}
 	stu.RemoveTag("123")
 	stus = All().FilterTag("123")
-	stus.ForEach(func(stu *Student) bool {
-		t.Log((*stu).GetName())
+	stus.ForEach(func(stu Student) bool {
+		t.Log(stu.GetName())
 		return true
 	})
 }
