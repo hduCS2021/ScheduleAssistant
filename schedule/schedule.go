@@ -3,37 +3,45 @@ package schedule
 import (
 	"context"
 	"github.com/hduCS2021/ScheduleAssistant/schedule/trigger"
+	"github.com/hduCS2021/ScheduleAssistant/student"
 	"time"
 )
 
 type Schedule struct {
-	name string
-	//todo: student class
-	students []string
-	trigger  []*trigger.Trigger
+	Name     string
+	StuSet   *student.StuSet
+	Triggers []*trigger.Trigger
 	do       func(schedule *Schedule)
 }
 
-func New(name string, do func(schedule *Schedule)) *Schedule {
+func New(name string, stuSet *student.StuSet, do func(schedule *Schedule)) *Schedule {
 	return &Schedule{
-		name: name,
-		do:   do,
+		Name:   name,
+		do:     do,
+		StuSet: stuSet,
 	}
 }
 
-func (s *Schedule) AddTrigger(t ...*trigger.Trigger) {
-	s.trigger = append(s.trigger, t...)
+func (s *Schedule) AddTrigger(t ...*trigger.Trigger) *Schedule {
+	s.Triggers = append(s.Triggers, t...)
+	return s
 }
 
-func (s *Schedule) AddStudent(stu ...string) {
-	s.students = append(s.students, stu...)
+func (s *Schedule) AddStudent(stu student.Student) *Schedule {
+	s.StuSet.Add(stu)
+	return s
+}
+
+func (s *Schedule) RemoveStudent(stu student.Student) *Schedule {
+	s.StuSet.Remove(stu)
+	return s
 }
 
 func (s *Schedule) isTriggered(t time.Time) bool {
-	if len(s.trigger) == 0 {
+	if len(s.Triggers) == 0 {
 		return false
 	}
-	for _, v := range s.trigger {
+	for _, v := range s.Triggers {
 		switch v.IsTriggered(t) {
 		case trigger.Accept:
 			return true
@@ -45,7 +53,7 @@ func (s *Schedule) isTriggered(t time.Time) bool {
 	return true
 }
 
-func (s *Schedule) Run(ctx context.Context) {
+func (s *Schedule) Run(ctx context.Context) *Schedule {
 	go func() {
 		time.Sleep(60*time.Second - time.Duration(time.Now().Second()))
 		t := time.NewTicker(time.Minute)
@@ -60,6 +68,6 @@ func (s *Schedule) Run(ctx context.Context) {
 				return
 			}
 		}
-
 	}()
-} 
+	return s
+}

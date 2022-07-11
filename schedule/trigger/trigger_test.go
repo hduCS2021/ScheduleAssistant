@@ -8,14 +8,9 @@ import (
 
 func TestTrigger(t *testing.T) {
 	tr := New()
-	min, err := date.NewMinute("1-10")
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	tr.Add(min)
-	tr.SetPrior(1)
-	tr.SetAction(PassThrough)
+	min := date.NewMinute("1-10")
+	tr.Add(min).SetPrior(1).SetAction(PassThrough)
+
 	if tr.IsTriggered(
 		time.Date(
 			2000, 1, 2, 3, 4, 5, 6, time.Local)) != PassThrough {

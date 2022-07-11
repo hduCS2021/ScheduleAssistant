@@ -2,6 +2,7 @@ package trigger
 
 import (
 	"github.com/hduCS2021/ScheduleAssistant/schedule/date"
+	log "github.com/sirupsen/logrus"
 	"time"
 )
 
@@ -22,23 +23,27 @@ type Trigger struct {
 
 func New() *Trigger {
 	return &Trigger{
-		prior: 0,
+		prior:  0,
+		action: PassThrough,
 	}
 }
 
-func (tr *Trigger) SetPrior(prior int) {
+func (tr *Trigger) SetPrior(prior int) *Trigger {
 	tr.prior = prior
+	return tr
 }
 
 // SetAction set the action when triggered.
 // in Accept mode, it returns Accept / PassThrough.
 // in PassThrough mode, it returns PassThrough / Reject.
 // in Reject mode, it returns Reject / PassThrough.
-func (tr *Trigger) SetAction(action Action) {
+func (tr *Trigger) SetAction(action Action) *Trigger {
 	if action < Reject || action > Accept {
-		return
+		log.Warnf("Invalid Action code:%d", action)
+	} else {
+		tr.action = action
 	}
-	tr.action = action
+	return tr
 }
 
 // IsTriggered returns an action.
@@ -54,8 +59,9 @@ func (tr *Trigger) IsTriggered(t time.Time) Action {
 	return PassThrough
 }
 
-func (tr *Trigger) Add(ds ...date.Date) {
+func (tr *Trigger) Add(ds ...date.Date) *Trigger {
 	for _, v := range ds {
 		tr.dates.Append(v)
 	}
+	return tr
 }
